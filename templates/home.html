@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Weather App</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <main class="weather-app">
+
+        <header class="app-header">
+            <div class="logo">☀️</div>
+
+            <div>
+                <h1>Weather dhakte chao ?</h1>
+                <p>Tomar city te current weather: </p>
+            </div>
+        </header>
+
+        <section class="search-section">
+            <label for="city-input">Tomar city</label>
+
+            <form class="search-box" method="POST" action="{{ url_for('home') }}">
+    <input
+        type="text"
+        id="city-input"
+        name="city"
+        placeholder="Enter city name..."
+        autocomplete="off"
+        required
+    >
+
+    <button type="submit" id="search-button">
+        Search
+    </button>
+</form>
+        </section>
+
+        <section class="weather-card">
+
+    {% if weather %}
+
+    <div class="weather-top">
+        <div>
+            <p class="location-label">CURRENT WEATHER</p>
+
+            <h2>{{ weather.city }}, {{ weather.country }}</h2>
+
+            <p id="weather-description">
+                {{ weather.description }}
+            </p>
+        </div>
+
+        <div class="weather-icon">
+            <img
+                src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"
+                alt="{{ weather.description }}"
+            >
+        </div>
+    </div>
+
+    <div class="temperature">
+        <span id="temperature">{{ weather.temperature }}</span>
+        <span class="degree">°C</span>
+    </div>
+
+    <div class="weather-details">
+
+        <div class="detail-box">
+            <span class="detail-icon">💧</span>
+            <p>Humidity</p>
+            <h3>{{ weather.humidity }}%</h3>
+        </div>
+
+        <div class="detail-box">
+            <span class="detail-icon">💨</span>
+            <p>Wind Speed</p>
+            <h3>{{ weather.wind_speed }} m/s</h3>
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <div class="weather-top">
+        <div>
+            <p class="location-label">CURRENT WEATHER</p>
+            <h2>Your City</h2>
+            <p id="weather-description">
+                Search for a city to see its weather
+            </p>
+        </div>
+
+        <div class="weather-icon">🌤️</div>
+    </div>
+
+    <div class="temperature">
+        <span id="temperature">--</span>
+        <span class="degree">°C</span>
+    </div>
+
+    <div class="weather-details">
+        <div class="detail-box">
+            <span class="detail-icon">💧</span>
+            <p>Humidity</p>
+            <h3>--%</h3>
+        </div>
+
+        <div class="detail-box">
+            <span class="detail-icon">💨</span>
+            <p>Wind Speed</p>
+            <h3>-- m/s</h3>
+        </div>
+    </div>
+
+    {% endif %}
+
+    {% if error %}
+        <p class="status-message">{{ error }}</p>
+    {% else %}
+        <p class="status-message">
+            {% if weather %}
+                Weather information updated successfully.
+            {% else %}
+                Enter a city name to get started.
+            {% endif %}
+        </p>
+    {% endif %}
+
+</section>
+
+        <footer>
+            <p>Weather data provided by OpenWeatherMap not Me.</p>
+        </footer>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
